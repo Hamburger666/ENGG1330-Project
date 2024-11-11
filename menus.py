@@ -39,7 +39,7 @@ class Menus:
             "New Game",
             "Continue",
             "Help",
-            "Story",
+            "Plot",
             "Quit"
         ]
         Menus.draw_menu(screen, options, highlighted, brackets = True)
@@ -68,9 +68,19 @@ class Menus:
         text = [
             "===== BACKGROUND STORY =====",
             "",
-            "You are a researcher working at an advanced materials lab.",
-            "Just a week ago,",
-            "And you are "
+            "You are a researcher working at an advanced materials lab",
+            "A month ago, you developed an explosive semi-conductor",
+            "This material detonates if the direction of the current is incorrect",
+            "Very quickly, this was made into many security componants",
+            "Some of which installed in the highest security parts of the lab",
+            "Preventing intruders from leaving in one piece",
+            "Today is another day of you working on improving the material",
+            "However, the submerged circuits you were working on was messed up",
+            "Likely due to a less-intelligent assistent",
+            "The fluid medium is connected to a power source via electrodes",
+            "Preventing the semi-conductors from dissolving in it",
+            "However, the electrodes were made of the semi-conductor too",
+            "Leaving you with one choice - fix the circuits by hand"
         ]
         
     @staticmethod
