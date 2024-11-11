@@ -378,7 +378,7 @@ class Game:
                     self.game_over_menu()
 
                 case Gamestates.STORY_MENU:
-                    self.sto
+                    self.story_menu()
                 
         #this is when the game stops 
         Animations.draw_scrolling_text( self.screen, "Thank You For Playing!", 
