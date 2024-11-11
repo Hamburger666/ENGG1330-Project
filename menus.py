@@ -39,6 +39,7 @@ class Menus:
             "New Game",
             "Continue",
             "Help",
+            "Story",
             "Quit"
         ]
         Menus.draw_menu(screen, options, highlighted, brackets = True)
