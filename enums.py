@@ -5,8 +5,8 @@ class Gamestates(Enum):
     HELP_MENU = 1
     IN_LEVEL = 2
     PAUSED = 3
-    DIFFICULTY_MENU = 4
-    
+    GAME_OVER = 4
+    STORY_MENU = 5
 
 
 class Directions(Enum):
