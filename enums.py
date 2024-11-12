@@ -37,5 +37,8 @@ class TileTypes(Enum):
         return cls(base)
 
 
+#tells players how to launch the game should they try to open this file instead
+if __name__ == "__main__":
+    print("Please launch the game with the command 'python game.py'.")
 
     
