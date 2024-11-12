@@ -53,15 +53,15 @@ class Game:
         self.curses_loaded = True
 
 
-    #loads a save file, returns true if successful
+
+    #loads a save file
     def load_save(self):
         try:
             f_save = open("save.pickle", "rb")
             self.current_level, self.levels = pickle.load(f_save)
             f_save.close()
-            return True
         except:
-            return False
+            pass
 
 
     #updates save file
@@ -148,6 +148,7 @@ class Game:
     def main_menu(self):
         Menus.draw_main_menu(self.screen, self.highlighted)
         if not self.is_selected:
+            #wait for the player to press SPACE/ENTER
             try:
                 self.handle_input(5)
             except ScreenSizeError as err:
@@ -157,6 +158,7 @@ class Game:
 
         self.flush_screen()
         match self.highlighted[0]:
+            #do something based on player selection
             case 0: #new game
                 Animations.draw_loading_screen(self.screen)
                 self.new_save()
@@ -164,8 +166,9 @@ class Game:
                 self.state = Gamestates.IN_LEVEL
 
             case 1: #continue
-                if self.load_save(): #only load the save if there is one
-                    Animations.draw_level_cutscene(self.screen, self.current_level)
+                if self.has_save(): #try to load a save if there is one 
+                    self.load_save()
+                    Animations.draw_level_cutscene(self.screen, self.current_level + 1)
                     self.state = Gamestates.IN_LEVEL
 
             case 2: #help
@@ -209,6 +212,7 @@ class Game:
         Menus.draw_pause_menu(self.screen, self.highlighted)
 
         if not self.is_selected:
+            #wait for the player to press SPACE/ENTER
             try:
                 if self.handle_input(4) in (27, ord("p")):
                     self.flush_screen()
@@ -223,6 +227,7 @@ class Game:
         self.flush_screen()
         self.paused = False
         match self.highlighted[0]:
+            #do something depending on player selection
             case 0: #continue
                 self.state = Gamestates.IN_LEVEL
 
@@ -249,6 +254,7 @@ class Game:
     def game_over_menu(self):
         Menus.draw_game_over_menu(self.screen, self.highlighted)
         if not self.is_selected:
+            #wait for the player to press SPACE/ENTER
             try:
                 self.handle_input(2)
             except ScreenSizeError as err:
@@ -258,6 +264,7 @@ class Game:
 
         self.flush_screen()
         match self.highlighted[0]:
+            #do something based on player selection
             case 0: #new game
                 Animations.draw_loading_screen(self.screen)
                 self.new_save()
@@ -290,29 +297,18 @@ class Game:
         self.reset_highlight()
         self.flush_screen()
 
-
     #handles game logic & display
     def game_logic(self):
-        #check if the player has completed all levels
-        if self.current_level >= len(self.levels):
-            text = "Congradulations! You have fixed the circuits!"
-            Animations.draw_scrolling_text(self.screen, text, bold=True, flush_screen=True, updates = 20)
-            time.sleep(2)
-            self.state = Gamestates.MAIN_MENU
-            #remove the completed save
-            if self.has_save():
-                os.remove("save.pickle")
-            return
-
         self.in_level = True
-        level = self.levels[self.current_level] 
-        #draws level on a subwindow so the background isn't cleared completely
+        level = self.levels[self.current_level] #get current level as an object
+        #draws the level on a subwindow to reduce lag
         max_size = self.screen.getmaxyx()
         level_subwin = self.screen.subwin(  level.size * 3 + 4, level.size * 6 + 4, 
                                             (max_size[0] - level.size*3)//2 - 2, (max_size[1] - level.size*6)//2 - 2)
         level.draw(level_subwin, self.highlighted, self.is_selected, self.blink) 
 
         key_input, previous_highlight = (0, 0), (0, 0)
+        #obtain player input
         try:
             key_input, previous_highlight = self.handle_input(self.levels[self.current_level].size, False)
         except ScreenSizeError as err:
@@ -327,23 +323,37 @@ class Game:
             self.paused = True
             return
 
-        #check if player has put down the tile they're holding and positions are all correct
+        #check if player has put down the tile they're holding and if level is completed
         correct_position, correct_order = self.levels[self.current_level].is_complete()
         if correct_position and not self.is_selected:
             if not correct_order:
                 #incorrect order, game over
+                self.flush_screen()
                 Animations.draw_game_over_animation(self.screen)
                 self.state = Gamestates.GAME_OVER
-                #remove the completed save
+                #remove the failed save
                 if self.has_save():
                     os.remove("save.pickle")
                 return
-            #correct order & position, move on to next level
+            #correct order & position, level completed, move on to next level
             Animations.draw_level_complete_animation(self.screen, self.levels[self.current_level])
             self.current_level += 1
+            #check if player has completed all levels
+            if self.current_level >= len(self.levels):
+                text = "Congradulations! Your experiment was a success!"
+                Animations.draw_scrolling_text(self.screen, text, bold=True, flush_screen=True, updates = 20)
+                time.sleep(2)
+                self.state = Gamestates.MAIN_MENU
+                #remove the completed save
+                if self.has_save():
+                    os.remove("save.pickle")
+                self.reset_highlight()
+                self.flush_screen()
+                return
             Animations.draw_level_cutscene(self.screen, self.current_level + 1)
-                        
-        #if the player has selected anything, move it
+
+        #if player has selected anything, move it
+        #accounts for non-wasd key presses by not using key_input to determine movement
         if self.is_selected:
             self.levels[self.current_level].move(previous_highlight, self.highlighted)
 
@@ -360,6 +370,7 @@ class Game:
         self.paused = False
         Animations.draw_intro(self.screen)
         self.flush_screen()
+        #main game loop
         while self.running:
             match self.state:
                 case Gamestates.MAIN_MENU:
