@@ -74,13 +74,13 @@ class Menus:
             "Very quickly, this was made into many security componants",
             "Some of which installed in the highest security parts of the lab",
             "Preventing intruders from leaving in one piece",
-            "Today is another day of you working on improving the material",
+            "Today, you are working a solvent for the semi-conductor"
             "However, the submerged circuits you were working on was messed up",
-            "Likely due to a less-intelligent assistent",
-            "The fluid medium is connected to a power source via electrodes",
-            "Preventing the semi-conductors from dissolving in it",
-            "However, the electrodes were made of the semi-conductor too",
-            "Leaving you with one choice - fix the circuits by hand"
+            "(Likely due to a less-intelligent assistent)",
+            "The solvent is supposed to dissolve the circuit when current flows through",
+            "However, you do not trust the person that messed up to fix it correctly",
+            "You two also were the only people ever involved in this project",
+            "Leaving you with one choice - fix the circuits by hand, yourself"
         ]
         Menus.draw_menu(screen, text)
         
@@ -104,7 +104,7 @@ class Menus:
             "Restart",
             "Quit"
         ]
-        Menus.draw_menu(screen, options, highlighted, True)
+        Menus.draw_menu(screen, options, highlighted, brackets = True)
 
     @staticmethod
     def draw_error_menu(screen, error_msg):
