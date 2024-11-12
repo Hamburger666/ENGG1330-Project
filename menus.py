@@ -33,6 +33,7 @@ class Menus:
                             logo[i], curses.color_pair(6) | curses.A_BOLD)
         screen.addstr(9, 0, "=" * (screen.getmaxyx()[1] - 1), curses.color_pair(6))
 
+    #draws main menu options
     @staticmethod
     def draw_main_menu(screen, highlighted):
         options = [
@@ -44,6 +45,7 @@ class Menus:
         ]
         Menus.draw_menu(screen, options, highlighted, brackets = True)
 
+    #draws help menu text
     @staticmethod
     def draw_help_menu(screen):
         text = [
@@ -63,6 +65,7 @@ class Menus:
         ]
         Menus.draw_menu(screen, text)
 
+    #draws the story text
     @staticmethod
     def draw_story_menu(screen):
         text = [
@@ -84,6 +87,7 @@ class Menus:
         ]
         Menus.draw_menu(screen, text)
         
+    #draws pause menu options
     @staticmethod
     def draw_pause_menu(screen, highlighted):
         options = [
@@ -98,6 +102,7 @@ class Menus:
                         text, curses.color_pair(6) | curses.A_BOLD)
         screen.refresh()
 
+    #draws the options after game over screen eds
     @staticmethod
     def draw_game_over_menu(screen, highlighted):
         options = [
@@ -106,6 +111,7 @@ class Menus:
         ]
         Menus.draw_menu(screen, options, highlighted, brackets = True)
 
+    #special method to draw errors, this one assumes the program will terminate after a key press
     @staticmethod
     def draw_error_menu(screen, error_msg):
         curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -120,9 +126,6 @@ class Menus:
         screen.getch()
 
 
-    
-
-
-
-            
-        
+#tells players how to correctly launch the game should they try to open this file instead
+if __name__ == "__main__":
+    print("Please launch the game with the command 'python game.py'.")
