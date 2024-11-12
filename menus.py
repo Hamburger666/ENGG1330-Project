@@ -4,7 +4,7 @@ import curses
 class Menus:
     #draws a top-down menu (or any text from top-down)
     @staticmethod
-    def draw_menu(screen, menu_elements, highlighted = (), *, brackets = False):
+    def draw_menu(screen, menu_elements, highlighted = (-1, -1), *, brackets = False):
         Menus.draw_logo(screen)
         for i in range(len(menu_elements)):
             element = f" <{menu_elements[i]}> " if brackets else f"  {menu_elements[i]}  "
@@ -61,7 +61,7 @@ class Menus:
             "",
             "Press any key to go back"
         ]
-        Menus.draw_menu(screen, text, (-1, -1))
+        Menus.draw_menu(screen, text)
 
     @staticmethod
     def draw_story_menu(screen):
@@ -82,6 +82,7 @@ class Menus:
             "However, the electrodes were made of the semi-conductor too",
             "Leaving you with one choice - fix the circuits by hand"
         ]
+        Menus.draw_menu(screen, text)
         
     @staticmethod
     def draw_pause_menu(screen, highlighted):
