@@ -83,7 +83,8 @@ class Animations:
             screen.refresh()
             time.sleep(0.1)
         curses.flushinp()
-   
+    
+    #draws the game over icon with a semi-scanning effect
     @staticmethod
     def draw_game_over_animation(screen):
         curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -98,10 +99,12 @@ class Animations:
             "(  O )\\ \\/ / ) _)  )   /",
             " \\__/  \\__/ (____)(__\\_)"]
 
+        #initialize pad
         pad = curses.newpad(10, 24)
         for row in image:
             pad.addstr(row, curses.color_pair(1) | curses.A_BOLD)
         
+        #draw increasing area of the pad from the center
         for i in range(24//2):
             pad.refresh(0, 24//2 - (i+1), 
                         (screen.getmaxyx()[0]-9)//2, screen.getmaxyx()[1]//2 - (i+1), 
@@ -111,8 +114,7 @@ class Animations:
         curses.flushinp()
         
 
-
-
+    #draws the level slowly dissolving
     @staticmethod
     def draw_level_complete_animation(screen, level):
         eraser = curses.newpad(2, 2)
@@ -159,3 +161,8 @@ class Animations:
         time.sleep(1)
         screen.clear()
         screen.refresh()
+
+
+#tells players how to correctly launch the game should they try to open this file instead
+if __name__ == "__main__":
+    print("Please launch the game with the command 'python game.py'.")
