@@ -147,5 +147,13 @@ def main(scr):
     test = Level(5)
     test.debug(scr)
 
-curses.wrapper(main)
+#tells players how to correctly launch the game should they open this file
+#also lets devs debug by writing an extra command line argument
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) >= 2 and sys.argv[2].lower() == "debug":
+        curses.wrapper(main)
+    else:
+        print("Please launch the game with the command 'python game.py'.")
+
 
